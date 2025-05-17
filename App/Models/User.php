@@ -1,25 +1,35 @@
 <?php
+// App/models/User.php
+require_once 'Model.php';
 
-namespace App\Models;
+class User extends Model {
+    private $id;
+    private $name;
+    private $email;
 
-use App\Models\Connection;
-class User
-{
-    protected $db;
-    public function __construct()
-    {
-        $this->db = Connection::getInstance();
+    // Getters
+    public function getId() {
+        return $this->id;
     }
 
-    public function getAll()
-    {
-        $sql = "SELECT users.name, users.email
-        FROM users;";
-        $result = $this->db->prepare($sql);
-        $result->execute();
-        $users = [];
-        $users = $result->fetchAll(\PDO::FETCH_ASSOC);
+    public function getName() {
+        return $this->name;
+    }
 
-        return $users;
+    public function getEmail() {
+        return $this->email;
+    }
+
+    // Setters
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    public function setName($name) {
+        $this->name = $name;
+    }
+
+    public function setEmail($email) {
+        $this->email = $email;
     }
 }
