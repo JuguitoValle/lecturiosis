@@ -1,31 +1,30 @@
 <?php
-// App/controllers/IndexController.php
-require_once __DIR__ . '/../models/ModelInterface.php';
-require_once __DIR__ . '/../models/Model.php';
-require_once __DIR__ . '/../models/User.php';
+namespace App\Controllers;
+use App\Models\User;
 
-// Configuración para mostrar errores
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+class IndexController
+{
+    public function __construct()
+    {
+        // Obtener los usuarios
+        $users = User::get();
 
-echo "<!DOCTYPE html><html><head><title>PHP MVC Test</title></head><body>";
+        // Pasar los datos a la vista
+        $this->renderView('IndexView.php', ['users' => $users]);
+    }
 
-// Instancia y uso del modelo User
-$user = new User();
-$user->setId(1);
-$user->setName("Danna Valler");
-$user->setEmail("valledanna82@gmail.com");
+    protected function renderView($viewName, $data = [])
+    {
+        // Extraer las variables del array $data para que estén disponibles en la vista
+        extract($data);
 
-// Mostrar información del usuario
-echo "<h2>Información del Usuario:</h2>";
-echo "<p>ID: " . $user->getId() . "</p>";
-echo "<p>Nombre: " . $user->getName() . "</p>";
-echo "<p>Email: " . $user->getEmail() . "</p>";
+        // Ruta correcta a la vista (ajusta según tu estructura de directorios)
+        $viewPath = __DIR__ . '/../Views/' . $viewName;
 
-// Llamar a los métodos del modelo
-echo "<h2>Funciones:</h2>";
-$user->save();
-$user->findById($user->getId());
-$user->delete();
-
-echo "</body></html>";
+        if (file_exists($viewPath)) {
+            require($viewPath);
+        } else {
+            throw new \Exception("Vista no encontrada: $viewPath");
+        }
+    }
+}
