@@ -25,4 +25,5 @@ spl_autoload_register(function ($class) {
     } else {
         throw new Exception("File not found: $file");
     }
-});
+}
+);
